@@ -1,15 +1,15 @@
 import java.time.LocalDateTime;
 
 public class User {
-    private String userId;
+    private String userName;
     private String email;
     private String password;
     private LocalDateTime registrationTime;
     private LocalDateTime activationTime;
     private String passwordResetToken;
 
-    public User(String userId, String email, String password, LocalDateTime registrationTime, LocalDateTime activationTime) {
-        this.userId = userId;
+    public User(String userName, String email, String password, LocalDateTime registrationTime, LocalDateTime activationTime) {
+        this.userName = userName;
         this.email = email;
         this.password = password;
         this.registrationTime = registrationTime;
@@ -17,10 +17,10 @@ public class User {
     }
 
     public String getUserId() {
-        return userId;
+        return userName;
     }
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUserId(String userName) {
+        this.userName = userName;
     }
     public String getEmail() {
         return email;
