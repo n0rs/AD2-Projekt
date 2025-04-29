@@ -1,6 +1,5 @@
 package webshop;
 
-import webshop.pruefer.Pruefer;
 import webshop.pruefer.EmailPruefer;
 import webshop.pruefer.PasswortPruefer;
 
