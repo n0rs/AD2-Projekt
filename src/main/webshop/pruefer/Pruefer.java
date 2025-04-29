@@ -1,5 +1,4 @@
 // Interface
-
 package webshop.pruefer;
 
 public interface Pruefer {
