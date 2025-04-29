@@ -10,7 +10,6 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Wie lautet deine E-Mail-Adresse: ");
         String email = scanner.nextLine();
-        // E-Mail-Prüfung
 
         EmailPruefer emailPruefer = new EmailPruefer();
         if (emailPruefer.pruefe(email)) {
