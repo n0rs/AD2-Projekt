@@ -26,7 +26,7 @@ public class Main {
             System.out.print("Wie lautet Ihr Passwort: ");
             String pw = scanner.nextLine();
 
-            PasswortPruefer pruefer = new PasswortPruefer(); // Instanz erstellen
+            PasswortPruefer pruefer = new PasswortPruefer();
             if (pruefer.pruefe(pw)) {
                 System.out.println("Starkes Passwort");
                 break;

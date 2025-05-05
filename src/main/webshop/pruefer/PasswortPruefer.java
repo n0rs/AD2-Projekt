@@ -1,5 +1,4 @@
 // Implementiert Pruefer
-
 package webshop.pruefer;
 
 public class PasswortPruefer implements Pruefer {
