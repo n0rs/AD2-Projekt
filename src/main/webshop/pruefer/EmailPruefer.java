@@ -19,7 +19,7 @@ public class EmailPruefer implements Pruefer {
     }
 
     // Führt eine Schleife durch, in der der Benutzer E-Mail-Adressen eingeben kann
-    public void starteEmailPruefung() {
+    public static void starteEmailPruefung() {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {

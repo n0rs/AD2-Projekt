@@ -16,8 +16,7 @@ public class Main {
         DatenbankManager.sqlAbfrage("SELECT * FROM nutzer;");
         DatenbankManager.verbindungTrennen();
 
-
-        new EmailPruefer().starteEmailPruefung();
-        new PasswortPruefer().startePasswortPruefung();
+        EmailPruefer.starteEmailPruefung();
+        PasswortPruefer.startePasswortPruefung();
     }
 }

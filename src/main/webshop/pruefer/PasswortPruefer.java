@@ -16,7 +16,7 @@ public class PasswortPruefer implements Pruefer {
         return hasLetter && hasDigit && hasSpecial;
     }
 
-    public void startePasswortPruefung(){
+    public static void startePasswortPruefung(){
         Scanner scanner = new Scanner(System.in);
 
         while(true) {
