@@ -3,6 +3,7 @@
 
 package webshop;
 
+// import der von uns erstellten Klassen
 import webshop.pruefer.EmailPruefer;
 import webshop.pruefer.PasswortPruefer;
 import webshop.db.DatenbankManager;
@@ -11,7 +12,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-
+        // Verbindung zur Datenbank herstellen und eine Abfrage durchführen
         DatenbankManager.verbinden();
         DatenbankManager.sqlAbfrage("SELECT * FROM nutzer;");
         DatenbankManager.verbindungTrennen();
