@@ -37,7 +37,7 @@ public class DatenbankManager {
     // Verbindung aufbauen
     public static void verbinden() {
         try {
-            // Driver Manager ist eine Klasse, die für die Verwaltung von JDBC-Treibern verantwortlich ist
+            // DriverManager ist eine Klasse, die für die Verwaltung von JDBC-Treibern verantwortlich ist
             // JDBC ist eine API, die es Java-Anwendungen ermöglicht, auf verschiedene Datenbanken zuzugreifen
             // In unserem Fall ist der Treiber in der lib/postgresql-42.7.5.jar Datei enthalten
             connection = DriverManager.getConnection(URL, BENUTZERNAME, PASSWORT);
