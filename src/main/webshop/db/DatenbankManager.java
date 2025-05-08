@@ -5,14 +5,30 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 public class DatenbankManager {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/deineDatenbank"; // Beispiel-URL
-    private static final String BENUTZERNAME = "Superuser";
-    private static final String PASSWORT = "DBPasswort";
+    private static String URL;
+    private static String BENUTZERNAME;
+    private static String PASSWORT;
 
     private static Connection connection;
+
+    static {
+        try (FileInputStream fis = new FileInputStream("config.properties")) {
+            Properties properties = new Properties();
+            properties.load(fis);
+
+            URL = properties.getProperty("db.url");
+            BENUTZERNAME = properties.getProperty("db.user");
+            PASSWORT = properties.getProperty("db.password");
+        } catch (IOException e) {
+            System.err.println("Fehler beim Laden der Konfigurationsdatei: " + e.getMessage());
+        }
+    }
 
     // Verbindung aufbauen
     public static void verbinden() {
@@ -20,7 +36,7 @@ public class DatenbankManager {
             connection = DriverManager.getConnection(URL, BENUTZERNAME, PASSWORT);
             System.out.println("Verbindung erfolgreich!");
         } catch (SQLException e) {
-            System.err.println("Fehler beim Aufbau der Verbindung: " + e.getMessage());
+            System.err.println("Fehler bei der Verbindung zur Datenbank: " + e.getMessage());
         }
     }
 
@@ -39,26 +55,19 @@ public class DatenbankManager {
     }
 
     // SQL-Abfrage ausführen
-    public static void sqlAbfrage(String sql) {
-        if (connection == null) {
-            System.out.println("Keine Verbindung vorhanden. Bitte zuerst verbinden.");
-            return;
-        }
+    public static void sqlAbfrage(String query) {
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
 
-        try (Statement statement = connection.createStatement()) {
-            boolean isResultSet = statement.execute(sql);
-
-            if (isResultSet) {
-                try (ResultSet resultSet = statement.getResultSet()) {
-                    while (resultSet.next()) {
-                        // Beispiel: Ausgabe der ersten Spalte
-                        System.out.println(resultSet.getString(1));
-                    }
+            // Ergebnisse ausgeben
+            while (resultSet.next()) {
+                int spaltenAnzahl = resultSet.getMetaData().getColumnCount();
+                for (int i = 1; i <= spaltenAnzahl; i++) {
+                    System.out.print(resultSet.getString(i) + "\t");
                 }
-            } else {
-                int updateCount = statement.getUpdateCount();
-                System.out.println("Abfrage erfolgreich ausgeführt. Betroffene Zeilen: " + updateCount);
+                System.out.println();
             }
+
         } catch (SQLException e) {
             System.err.println("Fehler bei der SQL-Abfrage: " + e.getMessage());
         }
