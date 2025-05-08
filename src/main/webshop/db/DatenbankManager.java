@@ -20,6 +20,7 @@ public class DatenbankManager {
 
     // Liest Datenbankkonfiguration aus Datei config.properties
     // Dadurch müssen wir passwort und Benutzername nicht im Code speichern
+    // Die Datei config.properties gebe ich euch so, da es unsinnig wäre, sie auf GitHub zu speichern :)
     static {
         try (FileInputStream fis = new FileInputStream("config.properties")) {
             Properties properties = new Properties();
