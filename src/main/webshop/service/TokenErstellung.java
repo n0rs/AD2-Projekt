@@ -1,6 +1,6 @@
 package webshop.service;
 
-import java.uuid.UUID;
+import java.util.UUID;
 
 public class TokenErstellung {
 
