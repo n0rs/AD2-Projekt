@@ -1,6 +1,8 @@
 // Implementiert Pruefer
 package webshop.pruefer;
 
+import java.util.Scanner;
+
 public class PasswortPruefer implements Pruefer {
     
     public boolean pruefe(String password) {
@@ -12,5 +14,23 @@ public class PasswortPruefer implements Pruefer {
         boolean hasDigit = password.matches(".*\\d+.*");
         boolean hasSpecial = password.matches(".*[!@#$%^&*(),.?\":{}|<>]+.*");
         return hasLetter && hasDigit && hasSpecial;
+    }
+
+    public void startePasswortPruefung(){
+        Scanner scanner = new Scanner(System.in);
+
+        while(true) {
+            System.out.print("Wie lautet Ihr Passwort: ");
+            String passwort = scanner.nextLine();
+
+            PasswortPruefer pruefer = new PasswortPruefer();
+            if (pruefer.pruefe(passwort)) { // Ruft die Methode "pruefe" auf und prüft das eingegebene Passwort
+                System.out.println("Starkes Passwort");
+                break;
+            } else {
+                System.out.println("Schlechtes Passwort. Bitte versuchen Sie es erneut.");
+            }
+        }
+        scanner.close();
     }
 }
