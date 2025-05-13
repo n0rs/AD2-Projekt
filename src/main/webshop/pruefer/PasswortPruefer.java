@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 public class PasswortPruefer implements Pruefer {
     
+    @Override
     public boolean pruefe(String password) {
         if (password.length() < 8) return false;
         // Nutzt regular expressions um zu prüfen ob das Passwort mindestens einen Buchstaben, eine Zahl und ein Sonderzeichen enthält

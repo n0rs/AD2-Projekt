@@ -4,6 +4,7 @@ package webshop.pruefer;
 import java.util.Scanner;
 
 public class EmailPruefer implements Pruefer {
+    @Override
     public boolean pruefe(String email) {
         if (!email.contains("@")) {
             return false;
