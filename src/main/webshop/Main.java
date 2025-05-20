@@ -32,7 +32,7 @@ public class Main {
 
         // Zum Testen Läuft das Programm 10 Minuten
         try {
-            Thread.sleep(600_000); // 10 Minuten warten
+            Thread.sleep(600_000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
