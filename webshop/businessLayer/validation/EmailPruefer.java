@@ -20,23 +20,20 @@ public class EmailPruefer implements Pruefer {
     }
 
     // Führt eine Schleife durch, in der der Benutzer E-Mail-Adressen eingeben kann
-    public static String starteEmailPruefung() {
+    public static String starteEmailPruefung(Scanner scanner) {
         String email;
-        try (Scanner scanner = new Scanner(System.in)) {
-            while (true) {
-                System.out.print("Wie lautet Ihre E-Mail-Adresse: ");
-                email = scanner.nextLine();
+        while (true) {
+            System.out.print("Wie lautet Ihre E-Mail-Adresse: ");
+            email = scanner.nextLine();
 
-                EmailPruefer EmailPruefer = new EmailPruefer(); // Erstellt ein neues Objekt vom Typ EmailPruefer zur Überprüfung der E-Mail
-                if (EmailPruefer.pruefe(email)) { // Ruft die Methode "pruefe" auf und prüft die eingegebene E-Mail
-                    System.out.println("Gültige E-Mail-Adresse: " + email);
-                    break;
-                } else {
-                    System.out.println("Ungültige E-Mail-Adresse. Bitte versuchen Sie es erneut.");
-                }
+            EmailPruefer EmailPruefer = new EmailPruefer(); // Erstellt ein neues Objekt vom Typ EmailPruefer zur Überprüfung der E-Mail
+            if (EmailPruefer.pruefe(email)) { // Ruft die Methode "pruefe" auf und prüft die eingegebene E-Mail
+                System.out.println("Gültige E-Mail-Adresse: " + email);
+                break;
+            } else {
+                System.out.println("Ungültige E-Mail-Adresse. Bitte versuchen Sie es erneut.");
             }
         }
-
         return email;
     }
 }

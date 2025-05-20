@@ -1,12 +1,22 @@
 package webshop.businessLayer.Objekte;
 
 public class Kunde {
+    private int id; // 
     private String vorname;
     private String nachname;
     private String email;
     private String password;
 
-    // Konstruktor
+    // Konstruktor mit ID (beim Laden aus der DB)
+    public Kunde(int id, String vorname, String nachname, String email, String password) {
+        this.id = id;
+        this.vorname = vorname;
+        this.nachname = nachname;
+        this.email = email;
+        this.password = password;
+    }
+
+    // Konstruktor ohne ID (beim Anlegen eines neuen Kunden)
     public Kunde(String vorname, String nachname, String email, String password) {
         this.vorname = vorname;
         this.nachname = nachname;
@@ -14,7 +24,14 @@ public class Kunde {
         this.password = password;
     }
 
-    // Getter und Setter
+    // Getter und Setter 
+    public int getId() { 
+        return id; 
+    }
+    public void setId(int id) {
+        this.id = id; 
+    }
+
     public String getVorName() {
          return vorname; 
         }

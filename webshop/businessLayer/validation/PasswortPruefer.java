@@ -17,23 +17,20 @@ public class PasswortPruefer implements Pruefer {
         return hasLetter && hasDigit && hasSpecial;
     }
 
-    public static String startePasswortPruefung(){
+    public static String startePasswortPruefung(Scanner scanner){
         String passwort;
-        try (Scanner scanner = new Scanner(System.in)) {
-            while(true) {
-                System.out.print("Wie lautet Ihr Passwort: ");
-                passwort = scanner.nextLine();
+        while(true) {
+            System.out.print("Wie lautet Ihr Passwort: ");
+            passwort = scanner.nextLine();
 
-                PasswortPruefer pruefer = new PasswortPruefer();
-                if (pruefer.pruefe(passwort)) { // Ruft die Methode "pruefe" auf und prüft das eingegebene Passwort
-                    System.out.println("Starkes Passwort");
-                    break;
-                } else {
-                    System.out.println("Schlechtes Passwort. Bitte versuchen Sie es erneut.");
-                }
+            PasswortPruefer pruefer = new PasswortPruefer();
+            if (pruefer.pruefe(passwort)) {
+                System.out.println("Starkes Passwort");
+                break;
+            } else {
+                System.out.println("Schlechtes Passwort. Bitte versuchen Sie es erneut.");
             }
         }
-
         return passwort;
     }
 }

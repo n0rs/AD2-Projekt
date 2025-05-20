@@ -1,32 +1,37 @@
-// javac -cp lib/postgresql-42.7.5.jar -d ./bin ./src/main/webshop/Main.java ./src/main/webshop/pruefer/*.java ./src/main/webshop/db/*.java ./src/main/webshop/service/*.java ./src/main/webshop/kunden/*.java kompiliert Programm
+// javac -cp lib/postgresql-42.7.5.jar -d ./bin ./webshop/Main.java ./webshop/businessLayer/Objekte/*.java ./webshop/businessLayer/service/*.java ./webshop/businessLayer/validation/*.java ./webshop/dataAccessLayer/*.java ./webshop/presentationLayer/*.java kompiliert Programm
 // java -cp ./bin;lib/postgresql-42.7.5.jar webshop.Main füht Main.java aus
 
 package webshop;
 
-import webshop.businessLayer.AutomatischerExecutor;
-import webshop.businessLayer.TokenErstellung;
-import webshop.businessLayer.Objekte.Kunde;
-import webshop.businessLayer.validation.EmailPruefer;
-import webshop.businessLayer.validation.PasswortPruefer;
-import webshop.dataAccessLayer.DatenbankManager;
+// eigene Imports
+import webshop.businessLayer.service.*;
+
+import java.util.Scanner;
+
+import webshop.businessLayer.Objekte.*;
+import webshop.businessLayer.validation.*;
+import webshop.dataAccessLayer.*;
 
 
 public class Main {
     public static void main(String[] args) {
-
+        Scanner scanner = new Scanner(System.in);
         String email;
         String passwort;
         // Verbindung zur Datenbank herstellen und eine Abfrage durchführen
         DatenbankManager.verbindungAufbauen();
-        AutomatischerExecutor.automatischerExecutor();
+        AutomatischeTokenVerwaltung.automatischerExecutorEmail();
+        AutomatischeTokenVerwaltung.automatischerExecutorPasswort();
 
-        email = EmailPruefer.starteEmailPruefung();
-        passwort = PasswortPruefer.startePasswortPruefung();
+        email = EmailPruefer.starteEmailPruefung(scanner);
+        passwort = PasswortPruefer.startePasswortPruefung(scanner);
 
         Kunde kunde = new Kunde("maxi", "muster", email, passwort);
-
         DatenbankManager.kundeAnlegen(kunde.getVorName(), kunde.getNachName(), kunde.getEmail(), kunde.getPassword());
-        DatenbankManager.emailVerificationEintragErstellen(kunde.getEmail(), TokenErstellung.erstelleToken());
+        kunde = DatenbankManager.findeKundeNachEmail(kunde.getEmail());
+        System.out.println(kunde.getId());
+        DatenbankManager.emailVerificationEintragErstellen(kunde.getId(), TokenErstellung.erstelleToken());
+        DatenbankManager.passwortResetEintragErstellen(kunde.getId(), TokenErstellung.erstelleToken());
 
 
         // Zum Testen Läuft das Programm 10 Minuten
@@ -37,5 +42,6 @@ public class Main {
         }
 
         DatenbankManager.verbindungTrennen();
+        scanner.close();
     }
 }
