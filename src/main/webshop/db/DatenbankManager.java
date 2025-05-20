@@ -162,7 +162,7 @@ public class DatenbankManager {
                     try (PreparedStatement insertStmt = connection.prepareStatement(insertQuery)) {
                         insertStmt.setInt(1, userId);
                         insertStmt.setString(2, token);
-                        insertStmt.setTimestamp(3, new java.sql.Timestamp(System.currentTimeMillis() + 60)); // 3600000 1 Stunde gültig
+                        insertStmt.setTimestamp(3, new java.sql.Timestamp(System.currentTimeMillis() + 3600000)); // 3600000 1 Stunde gültig
                         insertStmt.executeUpdate();
                         System.out.println("E-Mail-Verifizierungseintrag für User-ID " + userId + " wurde erstellt.");
                     }
