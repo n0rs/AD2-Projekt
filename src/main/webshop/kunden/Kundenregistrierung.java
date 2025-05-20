@@ -1,1 +1,2 @@
-// implements Kundenverwaltung
+package webshop.kunden;
+
