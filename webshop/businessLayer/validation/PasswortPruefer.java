@@ -1,5 +1,5 @@
 // Implementiert Pruefer
-package webshop.pruefer;
+package webshop.businessLayer.validation;
 
 import java.util.Scanner;
 

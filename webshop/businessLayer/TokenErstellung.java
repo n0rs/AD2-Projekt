@@ -1,4 +1,4 @@
-package webshop.service;
+package webshop.businessLayer;
 
 import java.util.UUID;
 

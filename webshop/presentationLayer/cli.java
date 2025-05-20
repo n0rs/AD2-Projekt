@@ -1,4 +1,4 @@
-package webshop.presentation;
+package webshop.presentationLayer;
 
 public class cli {
     public static void printMessage(String message) {

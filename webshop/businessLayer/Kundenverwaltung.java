@@ -1,4 +1,6 @@
-package webshop.kunden;
+package webshop.businessLayer;
+
+import webshop.businessLayer.Objekte.Kunde;
 
 public interface Kundenverwaltung {
     void kundenAnlegen(Kunde kunde);

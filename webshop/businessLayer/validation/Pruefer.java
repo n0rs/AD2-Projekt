@@ -1,5 +1,5 @@
 // Interface
-package webshop.pruefer;
+package webshop.businessLayer.validation;
 
 public interface Pruefer {
     boolean pruefe(String wert);

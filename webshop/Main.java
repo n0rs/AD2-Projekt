@@ -3,13 +3,12 @@
 
 package webshop;
 
-// import der von uns erstellten Klassen
-import webshop.pruefer.EmailPruefer;
-import webshop.pruefer.PasswortPruefer;
-import webshop.db.DatenbankManager;
-import webshop.service.AutomatischerExecutor;
-import webshop.service.TokenErstellung;
-import webshop.kunden.Kunde;
+import webshop.businessLayer.AutomatischerExecutor;
+import webshop.businessLayer.TokenErstellung;
+import webshop.businessLayer.Objekte.Kunde;
+import webshop.businessLayer.validation.EmailPruefer;
+import webshop.businessLayer.validation.PasswortPruefer;
+import webshop.dataAccessLayer.DatenbankManager;
 
 
 public class Main {
@@ -24,9 +23,9 @@ public class Main {
         email = EmailPruefer.starteEmailPruefung();
         passwort = PasswortPruefer.startePasswortPruefung();
 
-        Kunde kunde = new Kunde("maxi", email, passwort);
+        Kunde kunde = new Kunde("maxi", "muster", email, passwort);
 
-        DatenbankManager.kundeAnlegen(kunde.getName(), kunde.getEmail(), kunde.getPassword());
+        DatenbankManager.kundeAnlegen(kunde.getVorName(), kunde.getNachName(), kunde.getEmail(), kunde.getPassword());
         DatenbankManager.emailVerificationEintragErstellen(kunde.getEmail(), TokenErstellung.erstelleToken());
 
 

@@ -6,7 +6,8 @@ bzw. der Username und das Passwort legt ihr in der config.properties an
 führt die folgenden SQL-Befehle aus, um die Tabellen zu erstellen
 CREATE TABLE nutzer (
     id SERIAL PRIMARY KEY,
-    username VARCHAR(50) NOT NULL UNIQUE,
+    vorname VARCHAR(50) NOT NULL,
+    nachname VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     password_hash TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -32,7 +33,7 @@ db.password=hier kommt euer Passwort rein
 */
 
 
-package webshop.db;
+package webshop.dataAccessLayer;
 
 // Java-Importe
 import java.sql.Connection;
@@ -99,57 +100,36 @@ public class DatenbankManager {
         }
     }
 
-    // SQL-Abfrage ausführen
-    public static void sqlAbfrage(String query) {
-        // createStatement() ist eine Methode der Connection Klasse, die SQL-Abfragen an die Datenbank sendet
-        // Statement ist eine Schnittstelle, die SQL-Abfragen an die Datenbank sendet und Ergebnisse zurückgibt
-        // ResultSet gibt Ergebnisse einer SQL-Abfrage als Set aus
-        try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(query)) {
-
-            // Loop durch alle Zeilen des ResultSets .next() gibt true zurück, wenn es eine weitere Zeile gibt
-            // getMetaData() gibt Metadaten über die Spalten des ResultSets zurück (z.B. Spaltennamen, Datentypen)
-            // getColumnCount() gibt die Anzahl der Spalten im ResultSet zurück
-            while (resultSet.next()) {
-                int spaltenAnzahl = resultSet.getMetaData().getColumnCount();
-                for (int i = 1; i <= spaltenAnzahl; i++) {
-                    System.out.print(resultSet.getString(i) + "\t");
-                }
-                System.out.println();
-            }
-
-        } catch (SQLException e) {
-            System.err.println("Fehler bei der SQL-Abfrage: " + e.getMessage());
-        }
-    }
 
     // Kunde anlegen
-    public static void kundeAnlegen(String name, String email, String password) {
+    public static void kundeAnlegen(String vorname, String nachname, String email, String password) {
         // ? ist ein Platzhalter für einen Parameter in der SQL-Abfrage
         // PreparedStatement ist eine Schnittstelle, die SQL-Abfragen mit Platzhaltern unterstützt
-        String query = "INSERT INTO nutzer (username, email, password_hash) VALUES (?, ?, ?)";
+        String query = "INSERT INTO nutzer (vorname, nachname, email, password_hash) VALUES (?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, name);
+            preparedStatement.setString(1, vorname);
+            preparedStatement.setString(2, nachname);
             preparedStatement.setString(2, email);
             preparedStatement.setString(3, password);
             preparedStatement.executeUpdate();
-            System.out.println("Kunde " + name + " wurde angelegt.");
+            System.out.println("Kunde " + vorname + " " + nachname + " wurde angelegt.");
         } catch (SQLException e) {
             System.err.println("Fehler beim Anlegen des Kunden: " + e.getMessage());
         }
     }
-    // Kunde anhand email löschen
-    public static void kundeLoeschen(String email) {
-        String query = "DELETE FROM nutzer WHERE email = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, email);
-            preparedStatement.executeUpdate();
-            System.out.println("Kunde mit der E-Mail " + email + " wurde gelöscht.");
+    // Kunde anhand id löschen
+    public static void kundeLoeschenId(int userId) {
+        String query = "DELETE FROM nutzer WHERE id = ?";
+        try (PreparedStatement deleteStmt = connection.prepareStatement(query)) {
+            deleteStmt.setInt(1, userId);
+            deleteStmt.executeUpdate();
+            System.out.println("Nutzer mit ID " + userId + " wurde gelöscht (Verifizierung abgelaufen).");
         } catch (SQLException e) {
             System.err.println("Fehler beim Löschen des Kunden: " + e.getMessage());
         }
     }
 
+    
     // E-Mail-Verifizierungseintrag erstellen
     public static void emailVerificationEintragErstellen(String email, String token) {
         String selectQuery = "SELECT id FROM nutzer WHERE email = ?";
@@ -185,12 +165,7 @@ public class DatenbankManager {
             while (rs.next()) {
                 int userId = rs.getInt("user_id");
                 // Nutzer löschen (durch ON DELETE CASCADE werden auch Verifizierungen gelöscht)
-                String deleteUser = "DELETE FROM nutzer WHERE id = ?";
-                try (PreparedStatement deleteStmt = connection.prepareStatement(deleteUser)) {
-                    deleteStmt.setInt(1, userId);
-                    deleteStmt.executeUpdate();
-                    System.out.println("Nutzer mit ID " + userId + " wurde gelöscht (Verifizierung abgelaufen).");
-                }
+                
             }
         } catch (SQLException e) {
             System.err.println("Fehler beim Löschen abgelaufener Nutzer: " + e.getMessage());
