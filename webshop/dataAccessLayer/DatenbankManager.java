@@ -13,7 +13,7 @@ CREATE TABLE nutzer (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     is_active BOOLEAN DEFAULT FALSE
 );
- CREATE TABLE email_verification (
+CREATE TABLE email_verification (
     user_id INT REFERENCES nutzer(id) ON DELETE CASCADE,
     token VARCHAR(255) NOT NULL,
     expires_at TIMESTAMP NOT NULL,
@@ -36,15 +36,14 @@ db.password=hier kommt euer Passwort rein
 package webshop.dataAccessLayer;
 
 // Java-Importe
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.Properties;
-
 import webshop.businessLayer.Objekte.Kunde;
 
 
@@ -182,7 +181,7 @@ public class DatenbankManager {
             insertStatement.setString(2, token);
             insertStatement.setTimestamp(3, new java.sql.Timestamp(System.currentTimeMillis() + 60)); // 3600000 = 1 Stunde gültig
             insertStatement.executeUpdate();
-            System.out.println("Passwort-Reset-Eintrag für User-ID" + user_id + " wurde erstellt.");
+            System.out.println("Passwort-Reset-Eintrag für User-ID " + user_id + " wurde erstellt.");
         } catch (SQLException e) {
             System.err.println("Fehler beim Erstellen des Passwort-Reset-Eintrags: " + e.getMessage());
         }
