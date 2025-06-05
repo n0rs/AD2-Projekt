@@ -201,7 +201,7 @@ public class DatenbankManager {
         return -1; 
     }
 
-    // Beispiel: Suche nach E-Mail
+    // Suche nach E-Mail
     public static Kunde findeKundeNachEmail(String email) {
         String selectQuery = "SELECT id, vorname, nachname, email, password_hash FROM nutzer WHERE email = ?";
         try (PreparedStatement selectStmt = connection.prepareStatement(selectQuery)) {
@@ -220,6 +220,22 @@ public class DatenbankManager {
             System.err.println("Fehler beim Finden des Kunden: " + e.getMessage());
         }
         return null; // Kein Kunde gefunden
+    }
+
+    // Finde Token über UserID
+    public static String findeEmailTokenMitUserID(String email) {
+        String selectQuery = "SELECT token FROM email_verification WHERE user_id = (SELECT id FROM nutzer WHERE email = ?)";
+        try (PreparedStatement selectStmt = connection.prepareStatement(selectQuery)) {
+            selectStmt.setString(1, email);
+            try (ResultSet rs = selectStmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("token");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
 

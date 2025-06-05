@@ -33,6 +33,8 @@ public class Main {
         DatenbankManager.emailVerificationEintragErstellen(kunde.getId(), TokenErstellung.erstelleToken());
         DatenbankManager.passwortResetEintragErstellen(kunde.getId(), TokenErstellung.erstelleToken());
 
+        System.out.println(DatenbankManager.findeEmailTokenMitUserID(email)); 
+
 
         // Zum Testen Läuft das Programm 10 Minuten
         try {
