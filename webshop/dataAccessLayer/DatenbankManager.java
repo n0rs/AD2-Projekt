@@ -222,9 +222,25 @@ public class DatenbankManager {
         return null; // Kein Kunde gefunden
     }
 
-    // Finde Token über UserID
-    public static String findeEmailTokenMitUserID(String email) {
+    // Finde EmailToken über email
+    public static String findeEmailTokenMitEmail(String email) {
         String selectQuery = "SELECT token FROM email_verification WHERE user_id = (SELECT id FROM nutzer WHERE email = ?)";
+        try (PreparedStatement selectStmt = connection.prepareStatement(selectQuery)) {
+            selectStmt.setString(1, email);
+            try (ResultSet rs = selectStmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("token");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // Finde PasswortToken über email
+    public static String findePasswortTokenMitEmail(String email) {
+        String selectQuery = "SELECT token FROM password_reset WHERE user_id = (SELECT id FROM nutzer WHERE email = ?)";
         try (PreparedStatement selectStmt = connection.prepareStatement(selectQuery)) {
             selectStmt.setString(1, email);
             try (ResultSet rs = selectStmt.executeQuery()) {
