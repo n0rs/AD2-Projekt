@@ -1,5 +1,5 @@
 // javac -cp lib/postgresql-42.7.5.jar -d ./bin ./webshop/Main.java ./webshop/businessLayer/Objekte/*.java ./webshop/businessLayer/service/*.java ./webshop/businessLayer/validation/*.java ./webshop/dataAccessLayer/*.java ./webshop/presentationLayer/*.java kompiliert Programm
-// java -cp ./bin;lib/postgresql-42.7.5.jar webshop.Main füht Main.java aus
+// java -cp "./bin;lib/postgresql-42.7.5.jar" webshop.Main füht Main.java aus
 
 package webshop;
 
