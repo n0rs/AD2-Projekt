@@ -9,7 +9,7 @@ CREATE TABLE nutzer (
     vorname VARCHAR(50) NOT NULL,
     nachname VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
-    password_hash TEXT NOT NULL,
+    password TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     is_active BOOLEAN DEFAULT FALSE
 );
@@ -43,6 +43,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import webshop.businessLayer.Objekte.Kunde;
 
@@ -104,7 +106,7 @@ public class DatenbankManager {
     public static void kundeAnlegen(String email, String password) {
         // ? ist ein Platzhalter für einen Parameter in der SQL-Abfrage
         // PreparedStatement ist eine Schnittstelle, die SQL-Abfragen mit Platzhaltern unterstützt
-        String query = "INSERT INTO nutzer (email, password_hash) VALUES (?, ?)";
+        String query = "INSERT INTO nutzer (email, password) VALUES (?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, email);
             preparedStatement.setString(2, password);
@@ -115,18 +117,20 @@ public class DatenbankManager {
         }
     }
 
-    // Kunde anhand id löschen
-    public static void kundeLoeschenId(int userId) {
-        String query = "DELETE FROM nutzer WHERE id = ?";
-        try (PreparedStatement deleteStmt = connection.prepareStatement(query)) {
+    /// Löscht alle Nutzer mit einer Liste von IDs
+    public static void kundenLoeschenIds(List<Integer> userIds) {
+    String query = "DELETE FROM nutzer WHERE id = ?";
+    try (PreparedStatement deleteStmt = connection.prepareStatement(query)) {
+        for (int userId : userIds) {
             deleteStmt.setInt(1, userId);
             deleteStmt.executeUpdate();
             System.out.println("Nutzer mit ID " + userId + " wurde gelöscht (Verifizierung abgelaufen).");
+        }
         } catch (SQLException e) {
-            System.err.println("Fehler beim Löschen des Kunden: " + e.getMessage());
+            System.err.println("Fehler beim Löschen der Kunden: " + e.getMessage());
         }
     }
-
+    
     // Kunden ID anhand der E-Mail finden
     public static int findeKundenId(String email) {
         String selectQuery = "SELECT id FROM nutzer WHERE email = ?";
@@ -157,18 +161,19 @@ public class DatenbankManager {
         }
     }
 
-    // Findet ID des Nutzers, dessen E-Mail-Verifizierung abgelaufen ist
-    public static int abgelaufeneEmailTokenfinden() {
-        String selectQuery = "SELECT user_id FROM email_verification WHERE expires_at < NOW()";
-        try (PreparedStatement selectStmt = connection.prepareStatement(selectQuery);
-             ResultSet rs = selectStmt.executeQuery()) {
-            if (rs.next()) {
-                return rs.getInt("user_id");
-            }
-        } catch (SQLException e) {
-            System.err.println("Fehler beim Finden abgelaufener E-Mail-Token: " + e.getMessage());
+    // Gibt eine Liste aller User-IDs mit abgelaufenem E-Mail-Token zurück
+    public static List<Integer> abgelaufeneEmailTokenFinden() {
+    List<Integer> userIds = new ArrayList<>();
+    String selectQuery = "SELECT user_id FROM email_verification WHERE expires_at < NOW()";
+    try (PreparedStatement selectStmt = connection.prepareStatement(selectQuery);
+        ResultSet rs = selectStmt.executeQuery()) {
+        while (rs.next()) {
+            userIds.add(rs.getInt("user_id"));
         }
-        return -1; // -1 bedeutet, dass kein abgelaufener Token gefunden wurde
+    } catch (SQLException e) {
+        System.err.println("Fehler beim Finden abgelaufener E-Mail-Token: " + e.getMessage());
+    }
+    return userIds;
     }
 
     // Passwort-Reset-Eintrag erstellen
@@ -186,29 +191,30 @@ public class DatenbankManager {
     }
 
     // Abgelaufene Passwort-Reset-Token finden
-    public static int abgelaufenePasswortTokenfinden() {
+    public static List<Integer> abgelaufenePasswortTokenfinden() {
+        List<Integer> userIds = new ArrayList<>();
         String selectQuery = "SELECT user_id FROM password_reset WHERE expires_at < NOW()";
         try (PreparedStatement selectStmt = connection.prepareStatement(selectQuery);
-             ResultSet rs = selectStmt.executeQuery()) {
+            ResultSet rs = selectStmt.executeQuery()) {
             if (rs.next()) {
-                return rs.getInt("user_id");
+                userIds.add(rs.getInt("user_id"));
             }
         } catch (SQLException e) {
             System.err.println("Fehler beim Finden abgelaufener Passwort-Reset-Token: " + e.getMessage());
         }
-        return -1; 
+        return userIds; 
     }
 
     // Suche nach E-Mail
     public static Kunde findeKundeNachEmail(String email) {
-        String selectQuery = "SELECT id, vorname, nachname, email, password_hash FROM nutzer WHERE email = ?";
+        String selectQuery = "SELECT id, email, password FROM nutzer WHERE email = ?";
         try (PreparedStatement selectStmt = connection.prepareStatement(selectQuery)) {
             selectStmt.setString(1, email);
             try (ResultSet rs = selectStmt.executeQuery()) {
                 if (rs.next()) {
                     int id = rs.getInt("id");
                     String mail = rs.getString("email");
-                    String password = rs.getString("password_hash");
+                    String password = rs.getString("password");
                     return new Kunde(id, mail, password);
                 }
             }
@@ -229,7 +235,7 @@ public class DatenbankManager {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Fehler beim Finden des Kunden");
         }
         return null;
     }
@@ -245,7 +251,7 @@ public class DatenbankManager {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Fehler beim Finden des Kunden");
         }
         return null;
     }
