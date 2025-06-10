@@ -1,19 +1,17 @@
-// javac -cp lib/postgresql-42.7.5.jar -d ./bin ./webshop/Main.java ./webshop/businessLayer/Objekte/*.java ./webshop/businessLayer/service/*.java ./webshop/businessLayer/validation/*.java ./webshop/dataAccessLayer/*.java ./webshop/presentationLayer/*.java kompiliert Programm
-// java -cp "./bin;lib/postgresql-42.7.5.jar" webshop.Main füht Main.java aus
+// javac -cp "lib/*.jar" -d ./bin ./webshop/Main.java ./webshop/businessLayer/Objekte/*.java ./webshop/businessLayer/service/*.java ./webshop/businessLayer/validation/*.java ./webshop/dataAccessLayer/*.java ./webshop/presentationLayer/*.java kompiliert Programm
+// java -cp "./bin;lib/*/.jar" webshop.Main füht Main.java aus
 
 package webshop;
 
 // eigene Imports
-import java.util.Scanner;
-import webshop.businessLayer.Objekte.*;
-import webshop.businessLayer.service.*;
-import webshop.businessLayer.validation.*;
-import webshop.dataAccessLayer.*;
+
+import webshop.businessLayer.service.EmailVersand;
+
 
 
 public class Main {
     public static void main(String[] args) {
-    try (Scanner scanner = new Scanner(System.in)) {
+    /*try (Scanner scanner = new Scanner(System.in)) {
         String email;
         String passwort;
         // Verbindung zur Datenbank herstellen und eine Abfrage durchführen
@@ -50,7 +48,15 @@ public class Main {
         } catch (InterruptedException e) {
             System.out.println("Sleep fehlgeschlagen");
         }
-        DatenbankManager.verbindungTrennen();        
+        DatenbankManager.verbindungTrennen();
+        System.exit(0);
+    }*/
+
+    try {
+        EmailVersand.sendeEmail("muesse.christian@gmail.com", "Test", "TESTTESTTEST");
+    } catch (jakarta.mail.MessagingException e) {
+        System.out.println("Fehler beim Senden der E-Mail: " + e.getMessage());
+        e.printStackTrace();
     }
     }
 }
