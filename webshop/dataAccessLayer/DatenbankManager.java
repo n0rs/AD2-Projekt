@@ -101,17 +101,15 @@ public class DatenbankManager {
     }
 
     // Kunde anlegen
-    public static void kundeAnlegen(String vorname, String nachname, String email, String password) {
+    public static void kundeAnlegen(String email, String password) {
         // ? ist ein Platzhalter für einen Parameter in der SQL-Abfrage
         // PreparedStatement ist eine Schnittstelle, die SQL-Abfragen mit Platzhaltern unterstützt
-        String query = "INSERT INTO nutzer (vorname, nachname, email, password_hash) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO nutzer (email, password_hash) VALUES (?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, vorname);
-            preparedStatement.setString(2, nachname);
-            preparedStatement.setString(3, email);
-            preparedStatement.setString(4, password);
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, password);
             preparedStatement.executeUpdate();
-            System.out.println("Kunde " + vorname + " " + nachname + " wurde angelegt.");
+            System.out.println("Kunde mit email " + email + " wurde angelegt.");
         } catch (SQLException e) {
             System.err.println("Fehler beim Anlegen des Kunden: " + e.getMessage());
         }
@@ -209,11 +207,9 @@ public class DatenbankManager {
             try (ResultSet rs = selectStmt.executeQuery()) {
                 if (rs.next()) {
                     int id = rs.getInt("id");
-                    String vorname = rs.getString("vorname");
-                    String nachname = rs.getString("nachname");
                     String mail = rs.getString("email");
                     String password = rs.getString("password_hash");
-                    return new Kunde(id, vorname, nachname, mail, password);
+                    return new Kunde(id, mail, password);
                 }
             }
         } catch (SQLException e) {

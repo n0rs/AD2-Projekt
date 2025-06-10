@@ -25,8 +25,8 @@ public class Main {
             email = EmailPruefer.starteEmailPruefung(scanner);
             passwort = PasswortPruefer.startePasswortPruefung(scanner);
 
-            Kunde kunde = new Kunde("maxi", "muster", email, passwort);
-            DatenbankManager.kundeAnlegen(kunde.getVorName(), kunde.getNachName(), kunde.getEmail(), kunde.getPassword());
+            Kunde kunde = new Kunde(email, passwort);
+            DatenbankManager.kundeAnlegen(kunde.getEmail(), kunde.getPassword());
             kunde = DatenbankManager.findeKundeNachEmail(kunde.getEmail());
             System.out.println(kunde.getId());
             DatenbankManager.emailVerificationEintragErstellen(kunde.getId(), TokenErstellung.erstelleToken());
