@@ -39,13 +39,12 @@ public class Main {
             // Zum Testen Läuft das Programm 10 Minuten
             try {
                 Thread.sleep(600_000);
+                DatenbankManager.verbindungTrennen();
+                scanner.close();
+                break;
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
-            DatenbankManager.verbindungTrennen();
-            scanner.close();
-            break;
         }
     }
 }
