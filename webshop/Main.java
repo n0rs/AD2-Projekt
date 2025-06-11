@@ -1,12 +1,11 @@
-// javac -cp "lib/*.jar" -d ./bin ./webshop/Main.java ./webshop/businessLayer/Objekte/*.java ./webshop/businessLayer/service/*.java ./webshop/businessLayer/validation/*.java ./webshop/dataAccessLayer/*.java ./webshop/presentationLayer/*.java kompiliert Programm
-// java -cp "./bin;lib/*/.jar" webshop.Main füht Main.java aus
+// javac -cp "lib/*" -d ./bin ./webshop/Main.java ./webshop/businessLayer/Objekte/*.java ./webshop/businessLayer/service/*.java ./webshop/businessLayer/validation/*.java ./webshop/dataAccessLayer/*.java ./webshop/presentationLayer/*.java kompiliert Programm
+// java -cp "./bin;lib/*.jar" webshop.Main füht Main.java aus
 
 package webshop;
 
 // eigene Imports
 
 import webshop.businessLayer.service.EmailVersand;
-
 
 
 public class Main {
