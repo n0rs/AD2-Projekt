@@ -1,0 +1,4 @@
+*.class
+config.properties
+settings.json
+.lib/
