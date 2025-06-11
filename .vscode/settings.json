@@ -1,8 +1,10 @@
 {
-    "java.project.referencedLibraries": [
-        "lib/*.jar"
-    ],
     "java.project.sourcePaths": [
-        "."
+        ""
+    ],
+    "java.project.referencedLibraries": [
+        "c:\\Users\\n0rs9\\OneDrive\\Desktop\\rh-koeln\\Semester2\\AD2-Projekt\\lib\\postgresql-42.7.5.jar",
+        "c:\\Users\\n0rs9\\OneDrive\\Desktop\\rh-koeln\\Semester2\\AD2-Projekt\\lib\\jakarta.activation-2.0.1.jar",
+        "c:\\Users\\n0rs9\\OneDrive\\Desktop\\rh-koeln\\Semester2\\AD2-Projekt\\lib\\jakarta.mail-2.0.1.jar"
     ]
 }
