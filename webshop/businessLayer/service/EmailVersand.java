@@ -17,7 +17,7 @@ public class EmailVersand {
             properties.load(file);
 
             ABSENDER = properties.getProperty("email.absender");
-            PASSWORT = properties.getProperty("email.passwort"); // TODO: APP-Passwort benötigt
+            PASSWORT = properties.getProperty("email.passwort");
         } catch (IOException e) {
             System.err.println("Fehler beim Laden der Konfigurationsdatei: " + e.getMessage());
             }
