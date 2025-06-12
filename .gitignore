@@ -2,3 +2,6 @@
 config.properties
 settings.json
 .lib/
+.idea/
+out/
+*.iml
